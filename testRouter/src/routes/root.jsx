@@ -1,4 +1,13 @@
-import { Outlet, Link, useLoaderData, Form, redirect, NavLink, useNavigation, } from "react-router-dom";
+import { 
+    Outlet,
+    Link, 
+    //useLoaderData, 
+    Form, 
+    redirect, 
+    NavLink, 
+    //useNavigation, 
+    Navigate, 
+} from "react-router-dom";
 import { getContacts, createContact } from "../contacts";
 
 export async function action() {
@@ -12,12 +21,12 @@ export async function loader() {
 }
 
 export default function Root() {
-    const { contacts } = useLoaderData();
-    const navigation = useNavigation();
+    //const { contacts } = useLoaderData();
+    //const navigation = useNavigation();
 
   return (
-    <>
-      <div id="sidebar">
+    <main>
+      {/*<div id="sidebar" style={{display: "none"}}>
         <h1>React Router Contacts</h1>
         <div>
           <form id="search-form" role="search">
@@ -81,9 +90,11 @@ export default function Root() {
         className={
           navigation.state === "loading" ? "loading" : ""
         }
+        style={{display: "none"}}
       >
-        <Outlet />
-      </div>
-    </>
+      </div>*/}
+      <Outlet />
+      <Navigate to="/login" />
+    </main>
   );
 }

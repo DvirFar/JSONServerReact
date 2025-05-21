@@ -11,7 +11,10 @@ import ErrorPage from "./error-page";
 import Contact, { loader as contactLoader, } from "./routes/contact";
 import EditContact, { action as editAction, } from "./routes/edit";
 import { action as destroyAction } from "./routes/destroy";
-import Index from "./routes/index";
+
+import Login, { action as loginAction } from "./routes/login";
+import Register, { action as registerAction } from "./routes/register";
+import Home from "./routes/home";
 
 
 const router = createBrowserRouter([
@@ -22,7 +25,21 @@ const router = createBrowserRouter([
     loader: rootLoader,
     action: rootAction,
     children: [
-      { index: true, element: <Index /> },
+      { 
+        index: true,
+        path: "login",
+        action: loginAction,
+        element: <Login />,
+      },
+      {
+        path: "register",
+        action: registerAction,
+        element: <Register />,
+      },
+      {
+        path: "home",
+        element: <Home />,
+      },
       {
         path: "contacts/:contactId",
         element: <Contact />,

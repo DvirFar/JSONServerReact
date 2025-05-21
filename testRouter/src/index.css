@@ -380,3 +380,30 @@ i {
   justify-content: center;
   width: 100%;
 }
+
+.login-register {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-register p button {
+  font-size: 1.5em;
+}
+
+.login-register form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-register form input {
+  width: 20em;
+  height: 80px;
+  font-size: 1.5em;
+}
