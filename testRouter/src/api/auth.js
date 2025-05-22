@@ -3,12 +3,10 @@ import { apiRequest } from './config';
 // Login user
 export async function login(username, password) {
   try {
-    // For development, we're also implementing a direct check against the users endpoint
-    // since we know the login logic (website field acts as password)
-    // This is a fallback if the custom /auth/login endpoint doesn't work
+    // Get all users and check credentials (website field acts as password)
     const users = await apiRequest('users');
     const user = users.find(u => u.username === username && u.website === password);
-    
+
     if (user) {
       // Store user data in localStorage
       const userData = {
@@ -20,7 +18,7 @@ export async function login(username, password) {
       localStorage.setItem('loggedUser', JSON.stringify(userData));
       return { success: true, user: userData };
     }
-    
+
     throw new Error('Invalid username or password');
   } catch (error) {
     console.error('Login error:', error);
@@ -33,14 +31,19 @@ export async function register(userData) {
   try {
     // Check if username exists
     const users = await apiRequest('users');
+
+    if (!Array.isArray(users)) {
+      throw new Error('Expected user list to be an array but got invalid data'); // זה היה אכן באג שהחזיר null
+    }
     const existingUser = users.find(u => u.username === userData.username);
-    
+
+
     if (existingUser) {
       throw new Error('Username already exists');
     }
-    
+
     // Create new user
-    const lastUserId = Math.max(...users.map(u => u.id));
+    const lastUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) : 0;
     const newUser = {
       id: lastUserId + 1,
       name: userData.name,
@@ -61,9 +64,9 @@ export async function register(userData) {
         bs: ""
       }
     };
-    
+
     const createdUser = await apiRequest('users', 'POST', newUser);
-    
+
     // Store user data in localStorage
     const userToStore = {
       id: createdUser.id,
@@ -92,9 +95,15 @@ export function getCurrentUser() {
   return user ? JSON.parse(user) : null;
 }
 
+// Check if user is authenticated
+export function isAuthenticated() {
+  return getCurrentUser() !== null;
+}
+
 export default {
   login,
   register,
   logout,
   getCurrentUser,
+  isAuthenticated,
 };

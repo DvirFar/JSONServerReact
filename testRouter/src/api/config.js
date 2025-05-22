@@ -17,19 +17,20 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
     options.body = JSON.stringify(data);
   }
 
-  // Add auth token if user is logged in
-  const user = JSON.parse(localStorage.getItem('loggedUser'));
-  if (user) {
+  // Add auth token if user is logged in (optional - for future use)
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  if (user?.token) {
     options.headers.Authorization = `Bearer ${user.token}`;
   }
 
   try {
     const response = await fetch(url, options);
     
-    // For non-JSON responses
-    if (!response.headers.get('content-type')?.includes('application/json')) {
+    // Handle non-JSON responses (like DELETE)
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
       }
       return null;
     }
@@ -37,7 +38,7 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
     const responseData = await response.json();
 
     if (!response.ok) {
-      throw new Error(responseData.message || 'API request failed');
+      throw new Error(responseData.message || `API error: ${response.status}`);
     }
 
     return responseData;

@@ -6,15 +6,24 @@ import './login-register.css'
 export async function action({ request }) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
+    
     if (data.password !== data.verifyPassword) {
-        alert("passwords don't match!");
-        return;
+        alert("Passwords don't match!");
+        return null; // Stay on register page
     }
-    const response = await register(data);
-    if (!response.success) {
-        alert(response.message);
-        return redirect("/register");
+    
+    const result = await register({
+        username: data.username,
+        password: data.password,
+        name: data.name || data.username,
+        email: data.email || `${data.username}@example.com`
+    });
+    
+    if (!result.success) {
+        alert(result.message || "Registration failed!");
+        return null; // Stay on register page
     }
+    
     return redirect("/home");
 }
 

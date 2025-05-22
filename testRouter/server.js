@@ -7,8 +7,15 @@ const middlewares = defaults();
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
 
+// Add CORS headers
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
+
 // Add custom routes before JSON Server router
-// For example: Authentication fake endpoints
 server.post('/auth/login', (req, res) => {
   const { username, password } = req.body;
   const db = router.db;
@@ -43,7 +50,8 @@ server.post('/auth/register', (req, res) => {
   }
   
   // Create new user
-  const lastUserId = db.get('users').maxBy('id').value().id;
+  const users = db.get('users').value();
+  const lastUserId = users.length > 0 ? Math.max(...users.map(u => u.id)) : 0;
   const newUser = {
     id: lastUserId + 1,
     name,
@@ -84,16 +92,32 @@ server.use(bodyParser);
 
 // Add custom middleware for authentication check
 server.use((req, res, next) => {
-  // You can implement authentication middleware here
-  // For example, check for a token or user session
+  // Skip authentication for specific routes
+  if (req.path.startsWith('/auth/') || req.method === 'GET') {
+    return next();
+  }
+  
+  // For other routes, you could implement token-based authentication here
+  // For now, we'll just pass through
   next();
 });
 
 // Use default router
 server.use(router);
 
-// Start server
-const port = 3001;
+// Start the server
+const port = process.env.PORT || 3001;
 server.listen(port, () => {
   console.log(`JSON Server is running on port ${port}`);
+  console.log(`API endpoints available at http://localhost:${port}`);
+  console.log('Custom endpoints:');
+  console.log('  POST /auth/login');
+  console.log('  POST /auth/register');
+  console.log('Standard JSON Server endpoints:');
+  console.log('  GET /users');
+  console.log('  GET /todos');
+  console.log('  GET /posts');
+  console.log('  GET /albums');
+  console.log('  GET /photos');
+  console.log('  GET /comments');
 });

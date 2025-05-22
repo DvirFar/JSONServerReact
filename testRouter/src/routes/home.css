@@ -16,11 +16,26 @@
     letter-spacing: 1px;
 }
 
+.user-summary {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.user-summary p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    color: #555;
+}
+
 .home-btn-group {
     display: flex;
     justify-content: center;
-    gap: 1.5em;
+    gap: 1.2em;
     margin-bottom: 2.5em;
+    flex-wrap: wrap;
 }
 
 .home-btn-group button {
@@ -28,36 +43,99 @@
     color: #fff;
     border: none;
     border-radius: 8px;
-    padding: 0.7em 1.5em;
+    padding: 0.8em 1.6em;
     font-size: 1.1em;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-    box-shadow: 0 2px 8px rgba(57,146,255,0.08);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(57,146,255,0.2);
+    min-width: 90px;
 }
 
 .home-btn-group button:hover {
     background: #2367b7;
     transform: translateY(-2px) scale(1.04);
+    box-shadow: 0 4px 16px rgba(57,146,255,0.3);
 }
 
 .logout-btn {
-    background: #f44250;
+    background: #f44250 !important;
 }
 
 .logout-btn:hover {
-    background: #b92e3a;
+    background: #b92e3a !important;
+    box-shadow: 0 4px 16px rgba(244,66,80,0.3) !important;
 }
 
 section {
     margin-bottom: 2em;
     background: #fff;
-    border-radius: 10px;
-    padding: 1.5em;
-    box-shadow: 0 1px 4px rgba(60, 90, 130, 0.06);
+    border-radius: 12px;
+    padding: 2em;
+    box-shadow: 0 2px 12px rgba(60, 90, 130, 0.06);
 }
 
 section h2 {
     color: #2367b7;
     margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+section p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+section ul {
+    color: #555;
+    line-height: 1.8;
+    padding-left: 1.5rem;
+}
+
+section li {
+    margin-bottom: 0.5rem;
+}
+
+section li strong {
+    color: #333;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .home-main {
+        margin: 1em;
+        padding: 1.5em 2em;
+    }
+    
+    .home-title {
+        font-size: 2em;
+    }
+    
+    .home-btn-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+    }
+    
+    .home-btn-group button {
+        width: 100%;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-main {
+        padding: 1em 1.5em;
+    }
+    
+    .home-title {
+        font-size: 1.8em;
+    }
+    
+    section {
+        padding: 1.5em;
+    }
 }
