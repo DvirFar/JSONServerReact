@@ -1,52 +1,61 @@
-import { Form, redirect, useNavigate } from "react-router-dom";
-import { userLogged } from "../utils";
+import { Form, redirect, useNavigate, useActionData } from "react-router-dom";
+import { login } from "../api/auth";
 
 export async function action({ request }) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    const isValidUser = await checkUser(data);
-    if (!isValidUser) {
-        alert("Incorrect username or password!")
-        return redirect("/login");
-    }
-    return redirect("/home");
-}
-
-async function checkUser(data) {
-    if (data || !data) {
-        userLogged(data);
-        return true;
+    
+    try {
+        const result = await login(data.username, data.password);
+        if (result.success) {
+            return redirect("/home");
+        } else {
+            return { error: result.message || "Login failed" };
+        }
+    } catch (error) {
+        return { error: "Login failed: " + error.message };
     }
 }
 
 export default function Login() {
     const navigate = useNavigate();
+    const actionData = useActionData();
 
     return (
-    <main className="login-register">
-        <Form method="post" id="login">
+        <main className="login-register">
+            <h1>Login</h1>
+            {actionData?.error && (
+                <div style={{ color: 'red', marginBottom: '1rem' }}>
+                    {actionData.error}
+                </div>
+            )}
+            <Form method="post" id="login">
+                <p>
+                    <input
+                        placeholder="Username"
+                        aria-label="Username"
+                        type="text"
+                        name="username"
+                        required
+                    />
+                </p>
+                <p>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        required
+                    />
+                </p>
+                <p>
+                    <button type="submit">Login</button>
+                </p>
+            </Form>
             <p>
-                <input
-                placeholder="username"
-                aria-label="username"
-                type="text"
-                name="username"
-                />
+                <button type="button" onClick={() => navigate("/register")}>
+                    Go to Register
+                </button>
             </p>
-            <p>
-                <input
-                type="password"
-                name="password"
-                placeholder="password"
-                />
-            </p>
-            <p>
-                <button type="submit">Login</button>
-            </p>
-        </Form>
-        <p>
-            <button type="button" onClick={() => navigate("/register")}>Register</button>
-        </p>
-    </main>
+        </main>
     );
 }
