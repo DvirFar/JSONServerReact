@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCurrentUser } from "../../api/auth";
-import { getUserPosts, createPost, updatePost, deletePost, getPostComments, addComment, deleteComment } from "../../api/posts";
+import { getUserPosts, createPost, deletePost, getPostComments, addComment, deleteComment } from "../../api/posts";
 import "./userPosts.css";
 
 export default function UserPosts() {
@@ -224,8 +224,8 @@ export default function UserPosts() {
                             <h2>Post Details</h2>
                             <div className="selected-post">
                                 <div className="post-content">
-                                    <h3>{selectedPost.title}</h3>
-                                    <p>{selectedPost.body}</p>
+                                    <h3 dir="rtl">{selectedPost.title}</h3>
+                                    <p dir="rtl">{selectedPost.body}</p>
                                     <div className="post-meta">
                                         <span>Post ID: #{selectedPost.id}</span>
                                     </div>
@@ -254,11 +254,11 @@ export default function UserPosts() {
                                             ) : (
                                                 comments.map(comment => (
                                                     <div key={comment.id} className="comment-item">
-                                                        <div className="comment-header">
-                                                            <strong>{comment.name}</strong>
+                                                        <div className="comment-header" dir="rtl">
+                                                            <strong>{comment.name}</strong> 
                                                             <span className="comment-email">({comment.email})</span>
                                                         </div>
-                                                        <p>{comment.body}</p>
+                                                        <p dir="rtl">{comment.body}</p>
                                                         {comment.email === getCurrentUser()?.email && (
                                                             <button 
                                                                 onClick={() => handleDeleteComment(comment.id)}
