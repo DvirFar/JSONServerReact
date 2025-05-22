@@ -71,3 +71,7 @@ async function fakeNetwork(key) {
     setTimeout(res, Math.random() * 800);
   });
 }
+
+export function userLogged(userData) {
+  localStorage.setItem("loggedUser", JSON.stringify(userData));
+}

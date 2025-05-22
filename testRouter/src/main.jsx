@@ -8,13 +8,14 @@ import "./index.css";
 
 import Root, { loader as rootLoader, action as rootAction, } from "./routes/root";
 import ErrorPage from "./error-page";
-import Contact, { loader as contactLoader, } from "./routes/contact";
-import EditContact, { action as editAction, } from "./routes/edit";
-import { action as destroyAction } from "./routes/destroy";
 
 import Login, { action as loginAction } from "./routes/login";
 import Register, { action as registerAction } from "./routes/register";
-import Home from "./routes/home";
+import Home, { loader as homeLoader } from "./routes/home";
+import UserInfo from "./routes/users/userInfo";
+import UserTodos from "./routes/users/userTodos";
+import UserPosts from "./routes/users/userPosts";
+import UserAlbums from "./routes/users/userAlbums";
 
 
 const router = createBrowserRouter([
@@ -26,7 +27,6 @@ const router = createBrowserRouter([
     action: rootAction,
     children: [
       { 
-        index: true,
         path: "login",
         action: loginAction,
         element: <Login />,
@@ -38,23 +38,24 @@ const router = createBrowserRouter([
       },
       {
         path: "home",
+        loader: homeLoader,
         element: <Home />,
       },
       {
-        path: "contacts/:contactId",
-        element: <Contact />,
-        loader: contactLoader,
+        path: "users/:username/info",
+        element: <UserInfo />,
       },
       {
-        path: "contacts/:contactId/edit",
-        element: <EditContact />,
-        loader: contactLoader,
-        action: editAction,
+        path: "users/:username/todos",
+        element: <UserTodos />,
       },
       {
-        path: "contacts/:contactId/destroy",
-        action: destroyAction,
-        errorElement: <div>Oops! There was an error.</div>,
+        path: "users/:username/posts",
+        element: <UserPosts />,
+      },
+      {
+        path: "users/:username/albums",
+        element: <UserAlbums />,
       },
     ],
   },

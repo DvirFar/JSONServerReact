@@ -1,4 +1,5 @@
 import { Form, redirect, useNavigate } from "react-router-dom";
+import { userLogged } from "../utils";
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -12,7 +13,10 @@ export async function action({ request }) {
 }
 
 async function checkUser(data) {
-    if (data || !data) return true;
+    if (data || !data) {
+        userLogged(data);
+        return true;
+    }
 }
 
 export default function Login() {

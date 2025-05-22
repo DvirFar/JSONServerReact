@@ -8,7 +8,7 @@ import {
     //useNavigation, 
     Navigate, 
 } from "react-router-dom";
-import { getContacts, createContact } from "../contacts";
+import { getContacts, createContact } from "../utils";
 
 export async function action() {
   const contact = await createContact();
@@ -25,7 +25,7 @@ export default function Root() {
     //const navigation = useNavigation();
 
   return (
-    <main>
+    <>
       {/*<div id="sidebar" style={{display: "none"}}>
         <h1>React Router Contacts</h1>
         <div>
@@ -94,7 +94,7 @@ export default function Root() {
       >
       </div>*/}
       <Outlet />
-      <Navigate to="/login" />
-    </main>
+      <Navigate to="/home" />
+    </>
   );
 }
