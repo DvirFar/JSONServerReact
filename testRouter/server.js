@@ -1,8 +1,8 @@
 // JSON Server with custom configuration
-const jsonServer = require('json-server');
-const server = jsonServer.create();
-const router = jsonServer.router('db.json');
-const middlewares = jsonServer.defaults();
+import { create, router as _router, defaults, bodyParser } from 'json-server';
+const server = create();
+const router = _router('db.json');
+const middlewares = defaults();
 
 // Set default middlewares (logger, static, cors and no-cache)
 server.use(middlewares);
@@ -80,7 +80,7 @@ server.post('/auth/register', (req, res) => {
 });
 
 // To handle POST, PUT and PATCH you need to use a body-parser
-server.use(jsonServer.bodyParser);
+server.use(bodyParser);
 
 // Add custom middleware for authentication check
 server.use((req, res, next) => {

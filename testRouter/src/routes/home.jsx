@@ -1,4 +1,5 @@
 import { redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { logout } from "../api/auth";
 import "./home.css";
 
 export function loader() {
@@ -15,7 +16,7 @@ export default function Home() {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        localStorage.removeItem("loggedUser");
+        logout();
         navigate("/login");
     };
 

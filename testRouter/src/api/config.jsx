@@ -18,7 +18,7 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
   }
 
   // Add auth token if user is logged in
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('loggedUser'));
   if (user) {
     options.headers.Authorization = `Bearer ${user.token}`;
   }

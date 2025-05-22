@@ -1,5 +1,7 @@
 import { Form, redirect, useNavigate } from "react-router-dom";
-import { userLogged } from "../utils";
+import { useState } from "react";
+import { register } from "../api/auth";
+import './login-register.css'
 
 export async function action({ request }) {
     const formData = await request.formData();
@@ -8,56 +10,95 @@ export async function action({ request }) {
         alert("passwords don't match!");
         return;
     }
-    const isValidUser = await checkUser(data);
-    if (!isValidUser) {
-        alert("Incorrect username or password!")
-        return redirect("/login");
+    const response = await register(data);
+    if (!response.success) {
+        alert(response.message);
+        return redirect("/register");
     }
     return redirect("/home");
 }
 
-async function checkUser(data) {
-    if (data || !data) {
-        userLogged(data);
-        return true;
-    }
-}
-
 export default function Register() {
     const navigate = useNavigate();
+    const [showAdditional, setShowAdditional] = useState(false);
 
     return (
-    <main className="login-register">
-        <Form method="post" id="login">
+        <main className="login-register">
+            <Form method="post" id="register">
+                <section className="form-group">
+                <input placeholder="Name" aria-label="name" type="text" name="name" required />
+                <input placeholder="Username" aria-label="username" type="text" name="username" required />
+                </section>
+
+                <section className="form-group">
+                <input placeholder="Email" aria-label="email" type="email" name="email" required />
+                </section>
+
+                <section className="form-group">
+                <input type="password" name="password" placeholder="Password" required />
+                <input type="password" name="verifyPassword" placeholder="Verify password" required />
+                </section>
+                <button
+                    type="button"
+                    onClick={() => setShowAdditional((v) => !v)}
+                    style={{ marginBottom: "1em" }}
+                >
+                    {showAdditional ? "Hide Additional Info" : "Show Additional Info"}
+                </button>
+                {showAdditional && (
+                  <section className="additional-info">
+                    <div className="form-group">
+                      <input placeholder="Street" name="street" />
+                      <input placeholder="Suite" name="suite" />
+                    </div>
+                    <div className="form-group">
+                      <input placeholder="City" name="city" />
+                      <input placeholder="Zipcode" name="zipcode" />
+                    </div>
+                    <div className="form-group">
+                      <input placeholder="Latitude" name="lat" />
+                      <input placeholder="Longitude" name="lng" />
+                    </div>
+                    <div className="form-group">
+                      <input placeholder="Phone" name="phone" />
+                    </div>
+                    <div className="form-group">
+                      <input placeholder="Company Name" name="companyName" />
+                      <input placeholder="Catch Phrase" name="catchPhrase" />
+                      <input placeholder="BS" name="bs" />
+                    </div>
+                  </section>
+                )}
+                <section>
+                    <button type="submit">Register</button>
+                </section>
+            </Form>
             <p>
-                <input
-                placeholder="username"
-                aria-label="username"
-                type="text"
-                name="username"
-                />
+                <button type="button" onClick={() => navigate("/login")}>I have a user</button>
             </p>
-            <p>
-                <input
-                type="password"
-                name="password"
-                placeholder="password"
-                />
-            </p>
-            <p>
-                <input
-                type="password"
-                name="verifyPassword"
-                placeholder="verify password"
-                />
-            </p>
-            <p>
-                <button type="submit">Register</button>
-            </p>
-        </Form>
-        <p>
-            <button type="button" onClick={() => navigate("/login")}>Login</button>
-        </p>
-    </main>
+        </main>
     );
 }
+
+/*
+    {
+      id: lastUserId + 1,
+      name: userData.name,
+      username: userData.username,
+      email: userData.email,
+      website: userData.password, // Using website field as password
+      address: {
+        street: "",
+        suite: "",
+        city: "",
+        zipcode: "",
+        geo: { lat: "", lng: "" }
+      },
+      phone: "",
+      company: {
+        name: "",
+        catchPhrase: "",
+        bs: ""
+      }
+    }
+ */

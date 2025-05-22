@@ -17,7 +17,7 @@ export async function login(username, password) {
         username: user.username,
         email: user.email,
       };
-      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('loggedUser', JSON.stringify(userData));
       return { success: true, user: userData };
     }
     
@@ -71,7 +71,7 @@ export async function register(userData) {
       username: createdUser.username,
       email: createdUser.email,
     };
-    localStorage.setItem('user', JSON.stringify(userToStore));
+    localStorage.setItem('loggedUser', JSON.stringify(userToStore));
     
     return { success: true, user: userToStore };
   } catch (error) {
@@ -82,13 +82,13 @@ export async function register(userData) {
 
 // Logout user
 export function logout() {
-  localStorage.removeItem('user');
+  localStorage.removeItem('loggedUser');
   return { success: true };
 }
 
 // Get current user
 export function getCurrentUser() {
-  const user = localStorage.getItem('user');
+  const user = localStorage.getItem('loggedUser');
   return user ? JSON.parse(user) : null;
 }
 

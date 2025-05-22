@@ -1,22 +1,15 @@
 import { Form, redirect, useNavigate } from "react-router-dom";
-import { userLogged } from "../utils";
+import { login } from "../api/auth";
 
 export async function action({ request }) {
     const formData = await request.formData();
     const data = Object.fromEntries(formData);
-    const isValidUser = await checkUser(data);
-    if (!isValidUser) {
-        alert("Incorrect username or password!")
+    const response = await login(data.username, data.password);
+    if (!response.success) {
+        alert(response.message);
         return redirect("/login");
     }
     return redirect("/home");
-}
-
-async function checkUser(data) {
-    if (data || !data) {
-        userLogged(data);
-        return true;
-    }
 }
 
 export default function Login() {
@@ -45,7 +38,7 @@ export default function Login() {
             </p>
         </Form>
         <p>
-            <button type="button" onClick={() => navigate("/register")}>Register</button>
+            <button type="button" onClick={() => navigate("/register")}>I don't have a user</button>
         </p>
     </main>
     );
