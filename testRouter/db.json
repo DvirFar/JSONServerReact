@@ -1,3 +1,220 @@
 {
-    
+  "users": [
+    {
+      "id": 1,
+      "name": "Leanne Graham",
+      "username": "Bret",
+      "email": "Sincere@april.biz",
+      "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+          "lat": "-37.3159",
+          "lng": "81.1496"
+        }
+      },
+      "phone": "1-770-736-8031 x56442",
+      "website": "hildegard.org",
+      "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Ervin Howell",
+      "username": "Antonette",
+      "email": "Shanna@melissa.tv",
+      "address": {
+        "street": "Victor Plains",
+        "suite": "Suite 879",
+        "city": "Wisokyburgh",
+        "zipcode": "90566-7771",
+        "geo": {
+          "lat": "-43.9509",
+          "lng": "-34.4618"
+        }
+      },
+      "phone": "010-692-6593 x09125",
+      "website": "anastasia.net",
+      "company": {
+        "name": "Deckow-Crist",
+        "catchPhrase": "Proactive didactic contingency",
+        "bs": "synergize scalable supply-chains"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Clementine Bauch",
+      "username": "Samantha",
+      "email": "Nathan@yesenia.net",
+      "address": {
+        "street": "Douglas Extension",
+        "suite": "Suite 847",
+        "city": "McKenziehaven",
+        "zipcode": "59590-4157",
+        "geo": {
+          "lat": "-68.6102",
+          "lng": "-47.0653"
+        }
+      },
+      "phone": "1-463-123-4447",
+      "website": "ramiro.info",
+      "company": {
+        "name": "Romaguera-Jacobson",
+        "catchPhrase": "Face to face bifurcated interface",
+        "bs": "e-enable strategic applications"
+      }
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "דירוג הפרויקט זה חשוב",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "title": "להשלים את כל הנדרש בפרויקט",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "title": "לתקן באגים בקוד",
+      "completed": false
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "title": "לבדוק את התצוגה במובייל",
+      "completed": true
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "title": "להוסיף הנפשות לממשק",
+      "completed": false
+    },
+    {
+      "id": 6,
+      "userId": 3,
+      "title": "לכתוב תיעוד מקיף",
+      "completed": false
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "פרויקט Full-Stack הוא מאתגר",
+      "body": "בשנה האחרונה למדנו המון טכנולוגיות חדשות, הכרנו את התשתית של React ועכשיו אנחנו מיישמים את הכל בפרויקט משותף. האתגר הכי גדול הוא לשלב בין הצד הקדמי והאחורי."
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "title": "React Hooks שינו את הדרך שבה אני מתכנת",
+      "body": "מאז שהכרתי את hooks כמו useState ו-useEffect, הקוד שלי הרבה יותר מסודר ופונקציונלי. עכשיו אני יכול לנהל מצבים במקומות ממוקדים ואין יותר בלאגן של lifecycle methods."
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "title": "הרהורים על עבודת צוות בפיתוח",
+      "body": "העבודה בצוות עם עוד מפתח היא אתגר בפני עצמו. חשוב לתקשר בצורה ברורה, לחלק משימות בצורה הגיונית ולכבד את הקוד של אחרים. למדתי המון מהשותף שלי לפרויקט."
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "name": "אלון",
+      "email": "alon@example.com",
+      "body": "אני מסכים לחלוטין! שילוב של Frontend ו-Backend הוא האתגר האמיתי."
+    },
+    {
+      "id": 2,
+      "postId": 1,
+      "name": "מיכל",
+      "email": "michal@example.com",
+      "body": "חשוב להבין את המודל המנטלי של שני הצדדים. כל אחד חושב אחרת."
+    },
+    {
+      "id": 3,
+      "postId": 2,
+      "name": "יוסי",
+      "email": "yossi@example.com",
+      "body": "Hooks באמת שינו את הגישה. אני גם התחלתי להשתמש בהם לאחרונה והקוד הרבה יותר קריא."
+    }
+  ],
+  "albums": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "צילומי סקרין שוט של הפרויקט"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "title": "תמונות מהתצוגה הסופית"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "title": "השראות לעיצוב"
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "title": "סקיצות ראשוניות של הממשק"
+    }
+  ],
+  "photos": [
+    {
+      "id": 1,
+      "albumId": 1,
+      "title": "דף הבית של האפליקציה",
+      "url": "https://via.placeholder.com/600/92c952",
+      "thumbnailUrl": "https://via.placeholder.com/150/92c952"
+    },
+    {
+      "id": 2,
+      "albumId": 1,
+      "title": "עמוד הפרופיל של המשתמש",
+      "url": "https://via.placeholder.com/600/771796",
+      "thumbnailUrl": "https://via.placeholder.com/150/771796"
+    },
+    {
+      "id": 3,
+      "albumId": 2,
+      "title": "תצוגת רשימת משימות",
+      "url": "https://via.placeholder.com/600/24f355",
+      "thumbnailUrl": "https://via.placeholder.com/150/24f355"
+    },
+    {
+      "id": 4,
+      "albumId": 2,
+      "title": "תצוגת פוסטים ותגובות",
+      "url": "https://via.placeholder.com/600/d32776",
+      "thumbnailUrl": "https://via.placeholder.com/150/d32776"
+    },
+    {
+      "id": 5,
+      "albumId": 3,
+      "title": "עיצוב פלטפורמות דומות",
+      "url": "https://via.placeholder.com/600/f66b97",
+      "thumbnailUrl": "https://via.placeholder.com/150/f66b97"
+    },
+    {
+      "id": 6,
+      "albumId": 3,
+      "title": "השראות מהאתרים המובילים",
+      "url": "https://via.placeholder.com/600/56a8c2",
+      "thumbnailUrl": "https://via.placeholder.com/150/56a8c2"
+    }
+  ]
 }
