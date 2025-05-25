@@ -4,23 +4,31 @@ import { getCurrentUser } from "../../api/auth";
 import { getUserAlbums, createAlbum, deleteAlbum, getAlbumPhotos, countAlbumPhotos } from "../../api/albums";
 import { addPhoto, deletePhoto } from "../../api/photos";
 import "./userAlbums.css";
+import AlbumCard from "./userAlbumsParts/AlbumCard";
+import PhotoItem from "./userAlbumsParts/photoItem";
+import CreateAlbumForm from "./userAlbumsParts/createAlbumForm";
+import AddPhotoForm from "./userAlbumsParts/addPhotoForm";
 
 export default function UserAlbums() {
     const { username } = useParams();
     const navigate = useNavigate();
-    const [albums, setAlbums] = useState([]);
-    const [selectedAlbum, setSelectedAlbum] = useState(null);
-    const [photos, setPhotos] = useState([]);
+    const [ albumState, setAlbumState ] = useState({
+        albums: [],
+        selected: null,
+        searchTerm: "",
+        showCreateForm: false,
+        newTitle: "",
+    });
+    const [ photoState, setPhotoState ] = useState({
+        photos: [],
+        showAddForm: false,
+        newPhoto: { title: "", url: "" },
+        page: 1,
+        perPage: 6,
+        total: 0,
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [showCreateForm, setShowCreateForm] = useState(false);
-    const [newAlbumTitle, setNewAlbumTitle] = useState("");
-    const [showAddPhotoForm, setShowAddPhotoForm] = useState(false);
-    const [newPhoto, setNewPhoto] = useState({ title: "", url: "" });
-    const [photosPage, setPhotosPage] = useState(1);
-    const [photosPerPage] = useState(6);
-    const [totalPhotos, setTotalPhotos] = useState(0);
 
     useEffect(() => {
         const currentUser = getCurrentUser();
@@ -42,7 +50,7 @@ export default function UserAlbums() {
         try {
             setLoading(true);
             const albumsData = await getUserAlbums();
-            setAlbums(albumsData);
+            setAlbumState((prev) => { return { ...prev, albums: albumsData} });
             setError(null);
         } catch (err) {
             setError("Failed to load albums: " + err.message);
@@ -53,17 +61,16 @@ export default function UserAlbums() {
 
     const loadPhotos = async (albumId, page = 1) => {
         try {
-            const photosData = await getAlbumPhotos(albumId, page, photosPerPage);
+            const photosData = await getAlbumPhotos(albumId, page, photoState.perPage);
             const totalCount = await countAlbumPhotos(albumId);
             
             if (page === 1) {
-                setPhotos(photosData);
+                setPhotoState((prev) => { return { ...prev, photos: photosData } });
             } else {
-                setPhotos(prev => [...prev, ...photosData]);
+                setPhotoState((prev) => { return { ...prev, photos: [...prev.photos, photosData] } });
             }
             
-            setTotalPhotos(totalCount);
-            setPhotosPage(page);
+            setPhotoState((prev) => { return { ...prev, page: page, total: totalCount } } );
         } catch (err) {
             setError("Failed to load photos: " + err.message);
         }
@@ -71,12 +78,11 @@ export default function UserAlbums() {
 
     const handleCreateAlbum = async (e) => {
         e.preventDefault();
-        if (!newAlbumTitle.trim()) return;
+        if (!albumState.newTitle.trim()) return;
 
         try {
-            await createAlbum({ title: newAlbumTitle.trim() });
-            setNewAlbumTitle("");
-            setShowCreateForm(false);
+            await createAlbum({ title: albumState.newTitle.trim() });
+            setAlbumState(prev => { return { ...prev, newTitle: "", showCreateForm: false } } );
             loadAlbums();
         } catch (err) {
             setError("Failed to create album: " + err.message);
@@ -89,9 +95,9 @@ export default function UserAlbums() {
         try {
             await deleteAlbum(albumId);
             loadAlbums();
-            if (selectedAlbum && selectedAlbum.id === albumId) {
-                setSelectedAlbum(null);
-                setPhotos([]);
+            if (albumState.selected?.id === albumId) {
+                setAlbumState(prev => { return { ...prev, selected: null } } );
+                setPhotoState(prev => { return { ...prev, photos: [] } } );
             }
         } catch (err) {
             setError("Failed to delete album: " + err.message);
@@ -99,25 +105,23 @@ export default function UserAlbums() {
     };
 
     const handleSelectAlbum = async (album) => {
-        setSelectedAlbum(album);
-        setPhotos([]);
-        setPhotosPage(1);
+        setAlbumState(prev => { return { ...prev, selected: album } } );
+        setPhotoState(prev => { return { ...prev, photos: [], page: 1 } } );
         await loadPhotos(album.id);
     };
 
     const handleAddPhoto = async (e) => {
         e.preventDefault();
-        if (!newPhoto.title.trim() || !newPhoto.url.trim()) return;
+        if (!photoState.newPhoto.title.trim() || !photoState.newPhoto.url.trim()) return;
 
         try {
-            await addPhoto(selectedAlbum.id, {
-                title: newPhoto.title.trim(),
-                url: newPhoto.url.trim(),
-                thumbnailUrl: newPhoto.url.trim()
+            await addPhoto(albumState.selected.id, {
+                title: photoState.newPhoto.title.trim(),
+                url: photoState.newPhoto.url.trim(),
+                thumbnailUrl: photoState.newPhoto.url.trim()
             });
-            setNewPhoto({ title: "", url: "" });
-            setShowAddPhotoForm(false);
-            await loadPhotos(selectedAlbum.id);
+            setPhotoState(prev => { return { ...prev, newPhoto: { title: "", url: ""}, showAddForm: false } } );
+            await loadPhotos(albumState.selected.id);
         } catch (err) {
             setError("Failed to add photo: " + err.message);
         }
@@ -128,21 +132,21 @@ export default function UserAlbums() {
 
         try {
             await deletePhoto(photoId);
-            await loadPhotos(selectedAlbum.id);
+            await loadPhotos(albumState.selected.id);
         } catch (err) {
             setError("Failed to delete photo: " + err.message);
         }
     };
 
     const handleLoadMorePhotos = async () => {
-        await loadPhotos(selectedAlbum.id, photosPage + 1);
+        await loadPhotos(albumState.selected.id, photoState.page + 1);
     };
 
     const getFilteredAlbums = () => {
-        if (!searchTerm) return albums;
-        return albums.filter(album =>
-            album.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            album.id.toString().includes(searchTerm)
+        if (!albumState.searchTerm) return albumState.albums;
+        return albumState.albums.filter(album =>
+            album.title.toLowerCase().includes(albumState.searchTerm.toLowerCase()) ||
+            album.id.toString().includes(albumState.searchTerm)
         );
     };
 
@@ -150,7 +154,7 @@ export default function UserAlbums() {
         return <div className="albums-container"><p>Loading albums...</p></div>;
     }
 
-    if (error && !albums.length) {
+    if (error && !albumState.albums.length) {
         return (
             <div className="albums-container">
                 <div className="error-message">{error}</div>
@@ -160,15 +164,15 @@ export default function UserAlbums() {
     }
 
     const filteredAlbums = getFilteredAlbums();
-    const hasMorePhotos = photos.length < totalPhotos;
+    const hasMorePhotos = photoState.photos.length < photoState.total;
 
     return (
         <div className="albums-container">
             <div className="albums-header">
                 <h1>My Albums</h1>
                 <div className="header-buttons">
-                    <button onClick={() => setShowCreateForm(!showCreateForm)} className="create-btn">
-                        {showCreateForm ? "Cancel" : "Create Album"}
+                    <button onClick={() => setAlbumState(prev => { return { ...prev, showCreateForm: !prev.showCreateForm } } )} className="create-btn">
+                        {albumState.showCreateForm ? "Cancel" : "Create Album"}
                     </button>
                     <button onClick={() => navigate("/home")} className="back-btn">Back to Home</button>
                 </div>
@@ -177,21 +181,13 @@ export default function UserAlbums() {
             {error && <div className="error-message">{error}</div>}
 
             {/* Create album form */}
-            {showCreateForm && (
-                <form onSubmit={handleCreateAlbum} className="create-album-form">
-                    <h3>Create New Album</h3>
-                    <input
-                        type="text"
-                        value={newAlbumTitle}
-                        onChange={(e) => setNewAlbumTitle(e.target.value)}
-                        placeholder="Album title..."
-                        required
-                    />
-                    <div className="form-buttons">
-                        <button type="submit">Create Album</button>
-                        <button type="button" onClick={() => setShowCreateForm(false)}>Cancel</button>
-                    </div>
-                </form>
+            {albumState.showCreateForm && (
+                <CreateAlbumForm 
+                  onSubmit={handleCreateAlbum}
+                  value={albumState.newTitle}
+                  onChange={(e) => setAlbumState(prev => { return { ...prev, newTitle: e.target.value } } ) }
+                  onCancel={() => setAlbumState(prev => { return { ...prev, showCreateForm: false } } ) }
+                />
             )}
 
             {/* Search */}
@@ -199,8 +195,8 @@ export default function UserAlbums() {
                 <input
                     type="text"
                     placeholder="Search albums..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    value={albumState.searchTerm}
+                    onChange={(e) => setAlbumState(prev => { return { ...prev, searchTerm: e.target.value } } ) }
                     className="search-input"
                 />
             </div>
@@ -214,81 +210,53 @@ export default function UserAlbums() {
                     ) : (
                         <div className="albums-grid">
                             {filteredAlbums.map(album => (
-                                <div key={album.id} className={`album-card ${selectedAlbum?.id === album.id ? 'selected' : ''}`}>
-                                    <div className="album-header">
-                                        <span className="album-id">#{album.id}</span>
-                                        <h3 onClick={() => handleSelectAlbum(album)}>{album.title}</h3>
-                                    </div>
-                                    <div className="album-actions">
-                                        <button onClick={() => handleSelectAlbum(album)}>View Photos</button>
-                                        <button onClick={() => handleDeleteAlbum(album.id)} className="delete-btn">Delete</button>
-                                    </div>
-                                </div>
+                                <AlbumCard
+                                  key={album.id}
+                                  album={album}
+                                  selected={albumState.selected?.id == album.id}
+                                  onSelect={handleSelectAlbum}
+                                  onDelete={handleDeleteAlbum} 
+                                />
                             ))}
                         </div>
                     )}
                 </div>
 
                 {/* Selected album photos */}
-                {selectedAlbum && (
+                {albumState.selected && (
                     <div className="album-photos">
                         <div className="photos-header">
-                            <h2>{selectedAlbum.title}</h2>
+                            <h2>{albumState.selected.title}</h2>
                             <button 
-                                onClick={() => setShowAddPhotoForm(!showAddPhotoForm)} 
+                                onClick={() => setPhotoState(prev => { return { ...prev, showAddForm: !prev.showAddPhotoForm } } ) }
                                 className="add-photo-btn"
                             >
-                                {showAddPhotoForm ? "Cancel" : "Add Photo"}
+                                {photoState.showAddForm ? "Cancel" : "Add Photo"}
                             </button>
                         </div>
 
                         {/* Add photo form */}
-                        {showAddPhotoForm && (
-                            <form onSubmit={handleAddPhoto} className="add-photo-form">
-                                <input
-                                    type="text"
-                                    value={newPhoto.title}
-                                    onChange={(e) => setNewPhoto({...newPhoto, title: e.target.value})}
-                                    placeholder="Photo title..."
-                                    required
-                                />
-                                <input
-                                    type="url"
-                                    value={newPhoto.url}
-                                    onChange={(e) => setNewPhoto({...newPhoto, url: e.target.value})}
-                                    placeholder="Photo URL..."
-                                    required
-                                />
-                                <div className="form-buttons">
-                                    <button type="submit">Add Photo</button>
-                                    <button type="button" onClick={() => setShowAddPhotoForm(false)}>Cancel</button>
-                                </div>
-                            </form>
+                        {photoState.showAddForm && (
+                            <AddPhotoForm 
+                              onSubmit={handleAddPhoto}
+                              newPhoto={photoState.newPhoto}
+                              onChange={(photo) => setPhotoState(prev => { return { ...prev, newPhoto: photo} } ) }
+                              onCancel={() => setPhotoState(prev => { return { ...prev, showAddForm: false } } ) }
+                            />
                         )}
 
                         <div className="photos-info">
-                            <p>Showing {photos.length} of {totalPhotos} photos</p>
+                            <p>Showing {photoState.photos.length} of {photoState.total} photos</p>
                         </div>
 
                         {/* Photos grid */}
                         <div className="photos-grid">
-                            {photos.map(photo => (
-                                <div key={photo.id} className="photo-item">
-                                    <img 
-                                        src={photo.thumbnailUrl} 
-                                        alt={photo.title}
-                                        onError={(e) => {
-                                            e.target.src = 'https://via.placeholder.com/150x150?text=No+Image';
-                                        }}
-                                    />
-                                    <div className="photo-overlay">
-                                        <h4>{photo.title}</h4>
-                                        <div className="photo-actions">
-                                            <a href={photo.url} target="_blank" rel="noopener noreferrer">View Full</a>
-                                            <button onClick={() => handleDeletePhoto(photo.id)} className="delete-photo-btn">Delete</button>
-                                        </div>
-                                    </div>
-                                </div>
+                            {photoState.photos.map(photo => (
+                                <PhotoItem 
+                                  key={photo.id}
+                                  photo={photo}
+                                  onDelete={handleDeletePhoto}
+                                />
                             ))}
                         </div>
 
@@ -301,7 +269,7 @@ export default function UserAlbums() {
                             </div>
                         )}
 
-                        {photos.length === 0 && (
+                        {photoState.photos.length === 0 && (
                             <p className="no-photos">No photos in this album</p>
                         )}
                     </div>

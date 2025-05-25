@@ -147,6 +147,12 @@
       "title": "finish the FSWD project",
       "completed": false,
       "id": 9
+    },
+    {
+      "userId": 1,
+      "title": "לבדוק האם מחיקה עובדת באופן מלא",
+      "completed": false,
+      "id": 10
     }
   ],
   "posts": [
