@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import "./index.css";
 
-import Root, { loader as rootLoader, action as rootAction, } from "./routes/root";
+import Root from "./routes/root";
 import ErrorPage from "./error-page";
 
 import Login, { action as loginAction } from "./routes/login";
@@ -23,8 +23,6 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
     children: [
       { 
         path: "login",

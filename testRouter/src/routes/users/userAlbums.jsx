@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getCurrentUser } from "../../api/auth";
-import { getUserAlbums, createAlbum, deleteAlbum, getAlbumPhotos, countAlbumPhotos } from "../../api/albums";
-import { addPhoto, deletePhoto } from "../../api/photos";
+import { loadAlbums, createAlbum, deleteAlbum, selectAlbum, addPhoto, deletePhoto, loadMorePhotos, getFilteredAlbums } from "../../utils"
+
 import "./userAlbums.css";
 import AlbumCard from "./userAlbumsParts/AlbumCard";
 import PhotoItem from "./userAlbumsParts/photoItem";
@@ -43,112 +43,24 @@ export default function UserAlbums() {
             return;
         }
 
-        loadAlbums();
+        handleLoadAlbums();
     }, [username, navigate]);
 
-    const loadAlbums = async () => {
-        try {
-            setLoading(true);
-            const albumsData = await getUserAlbums();
-            setAlbumState((prev) => { return { ...prev, albums: albumsData} });
-            setError(null);
-        } catch (err) {
-            setError("Failed to load albums: " + err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const handleLoadAlbums = async () => { loadAlbums(setLoading, setAlbumState, setError) };
 
-    const loadPhotos = async (albumId, page = 1) => {
-        try {
-            const photosData = await getAlbumPhotos(albumId, page, photoState.perPage);
-            const totalCount = await countAlbumPhotos(albumId);
-            
-            if (page === 1) {
-                setPhotoState((prev) => { return { ...prev, photos: photosData } });
-            } else {
-                setPhotoState((prev) => { return { ...prev, photos: [...prev.photos, photosData] } });
-            }
-            
-            setPhotoState((prev) => { return { ...prev, page: page, total: totalCount } } );
-        } catch (err) {
-            setError("Failed to load photos: " + err.message);
-        }
-    };
+    const handleCreateAlbum = async (e) => { createAlbum(e, albumState, setAlbumState, setError) };
 
-    const handleCreateAlbum = async (e) => {
-        e.preventDefault();
-        if (!albumState.newTitle.trim()) return;
+    const handleDeleteAlbum = async (albumId) => { deleteAlbum(albumId, albumState, setAlbumState, setPhotoState, setError) };
 
-        try {
-            await createAlbum({ title: albumState.newTitle.trim() });
-            setAlbumState(prev => { return { ...prev, newTitle: "", showCreateForm: false } } );
-            loadAlbums();
-        } catch (err) {
-            setError("Failed to create album: " + err.message);
-        }
-    };
+    const handleSelectAlbum = async (album) => { selectAlbum(album, setAlbumState, setPhotoState) };
 
-    const handleDeleteAlbum = async (albumId) => {
-        if (!window.confirm("Are you sure you want to delete this album and all its photos?")) return;
+    const handleAddPhoto = async (e) => { addPhoto(e, albumState, photoState, setPhotoState, setError) };
 
-        try {
-            await deleteAlbum(albumId);
-            loadAlbums();
-            if (albumState.selected?.id === albumId) {
-                setAlbumState(prev => { return { ...prev, selected: null } } );
-                setPhotoState(prev => { return { ...prev, photos: [] } } );
-            }
-        } catch (err) {
-            setError("Failed to delete album: " + err.message);
-        }
-    };
+    const handleDeletePhoto = async (photoId) => { deletePhoto(photoId, albumState, setError) };
 
-    const handleSelectAlbum = async (album) => {
-        setAlbumState(prev => { return { ...prev, selected: album } } );
-        setPhotoState(prev => { return { ...prev, photos: [], page: 1 } } );
-        await loadPhotos(album.id);
-    };
+    const handleLoadMorePhotos = async () => { loadMorePhotos(albumState, photoState) };
 
-    const handleAddPhoto = async (e) => {
-        e.preventDefault();
-        if (!photoState.newPhoto.title.trim() || !photoState.newPhoto.url.trim()) return;
-
-        try {
-            await addPhoto(albumState.selected.id, {
-                title: photoState.newPhoto.title.trim(),
-                url: photoState.newPhoto.url.trim(),
-                thumbnailUrl: photoState.newPhoto.url.trim()
-            });
-            setPhotoState(prev => { return { ...prev, newPhoto: { title: "", url: ""}, showAddForm: false } } );
-            await loadPhotos(albumState.selected.id);
-        } catch (err) {
-            setError("Failed to add photo: " + err.message);
-        }
-    };
-
-    const handleDeletePhoto = async (photoId) => {
-        if (!window.confirm("Are you sure you want to delete this photo?")) return;
-
-        try {
-            await deletePhoto(photoId);
-            await loadPhotos(albumState.selected.id);
-        } catch (err) {
-            setError("Failed to delete photo: " + err.message);
-        }
-    };
-
-    const handleLoadMorePhotos = async () => {
-        await loadPhotos(albumState.selected.id, photoState.page + 1);
-    };
-
-    const getFilteredAlbums = () => {
-        if (!albumState.searchTerm) return albumState.albums;
-        return albumState.albums.filter(album =>
-            album.title.toLowerCase().includes(albumState.searchTerm.toLowerCase()) ||
-            album.id.toString().includes(albumState.searchTerm)
-        );
-    };
+    const handleGetFilteredAlbums = () => { return getFilteredAlbums(albumState) };
 
     if (loading) {
         return <div className="albums-container"><p>Loading albums...</p></div>;
@@ -163,7 +75,7 @@ export default function UserAlbums() {
         );
     }
 
-    const filteredAlbums = getFilteredAlbums();
+    const filteredAlbums = handleGetFilteredAlbums();
     const hasMorePhotos = photoState.photos.length < photoState.total;
 
     return (
@@ -228,7 +140,7 @@ export default function UserAlbums() {
                         <div className="photos-header">
                             <h2>{albumState.selected.title}</h2>
                             <button 
-                                onClick={() => setPhotoState(prev => { return { ...prev, showAddForm: !prev.showAddPhotoForm } } ) }
+                                onClick={() => setPhotoState(prev => { return { ...prev, showAddForm: !prev.showAddForm } } ) }
                                 className="add-photo-btn"
                             >
                                 {photoState.showAddForm ? "Cancel" : "Add Photo"}
