@@ -1,5 +1,6 @@
 import { getUserAlbums, getAlbumPhotos, countAlbumPhotos, createAlbum as createAlbumUtil, deleteAlbum as deleteAlbumUtil } from "./api/albums";
 import { addPhoto as addPhotoUtil, deletePhoto as deletePhotoUtil } from "./api/photos";
+import { getUserPosts, createPost as createPostApi, deletePost as deletePostApi, getPostComments, addComment as addCommentApi, deleteComment as deleteCommentApi } from "./api/posts";
 
 export function userLogged(userData) {
   localStorage.setItem("loggedUser", JSON.stringify(userData));
@@ -104,4 +105,92 @@ const loadPhotos = async (albumId, page = 1, photoState, setPhotoState, setError
     } catch (err) {
         setError("Failed to load photos: " + err.message);
     }
+};
+
+export const loadPosts = async (setPostState, setError) => {
+    try {
+        setPostState(prev => ({ ...prev, loading: true }));
+        const postsData = await getUserPosts();
+        setPostState(prev => ({ ...prev, posts: postsData, error: null, loading: false }));
+    } catch (err) {
+        setError("Failed to load posts: " + err.message);
+        setPostState(prev => ({ ...prev, loading: false }));
+    }
+};
+
+export const createPost = async (e, postState, setPostState, setError) => {
+    e.preventDefault();
+    if (!postState.newPost.title.trim() || !postState.newPost.body.trim()) return;
+    try {
+        await createPostApi(postState.newPost);
+        setPostState(prev => ({ ...prev, newPost: { title: "", body: "" }, showCreateForm: false }));
+        loadPosts(setPostState, setError);
+    } catch (err) {
+        setError("Failed to create post: " + err.message);
+    }
+};
+
+export const deletePost = async (postId, postState, setPostState, setCommentState, setError) => {
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    try {
+        await deletePostApi(postId);
+        loadPosts(setPostState, setError);
+        if (postState.selected?.id === postId) {
+            setPostState(prev => ({ ...prev, selected: null }));
+            setCommentState(prev => ({ ...prev, show: false, comments: [] }));
+        }
+    } catch (err) {
+        setError("Failed to delete post: " + err.message);
+    }
+};
+
+export const selectPost = (post, setPostState, setCommentState) => {
+    setPostState(prev => ({ ...prev, selected: post }));
+    setCommentState(prev => ({ ...prev, show: false, comments: [] }));
+};
+
+export const showComments = async (post, setPostState, setCommentState, setError) => {
+    setPostState(prev => ({ ...prev, selected: post }));
+    setCommentState(prev => ({ ...prev, show: true }));
+    await loadComments(post.id, setCommentState, setError);
+};
+
+export const loadComments = async (postId, setCommentState, setError) => {
+    try {
+        const commentsData = await getPostComments(postId);
+        setCommentState(prev => ({ ...prev, comments: commentsData }));
+    } catch (err) {
+        setError("Failed to load comments: " + err.message);
+    }
+};
+
+export const addComment = async (e, postState, commentState, setCommentState, setError) => {
+    e.preventDefault();
+    if (!commentState.newComment.trim()) return;
+    try {
+        await addCommentApi(postState.selected.id, { body: commentState.newComment.trim() });
+        setCommentState(prev => ({ ...prev, newComment: "" }));
+        await loadComments(postState.selected.id, setCommentState, setError);
+    } catch (err) {
+        setError("Failed to add comment: " + err.message);
+    }
+};
+
+export const deleteComment = async (commentId, postState, setCommentState, setError) => {
+    if (!window.confirm("Are you sure you want to delete this comment?")) return;
+    try {
+        await deleteCommentApi(commentId);
+        await loadComments(postState.selected.id, setCommentState, setError);
+    } catch (err) {
+        setError("Failed to delete comment: " + err.message);
+    }
+};
+
+export const getFilteredPosts = (postState) => {
+    if (!postState.searchTerm) return postState.posts;
+    return postState.posts.filter(post =>
+        post.title.toLowerCase().includes(postState.searchTerm.toLowerCase()) ||
+        post.body.toLowerCase().includes(postState.searchTerm.toLowerCase()) ||
+        post.id.toString().includes(postState.searchTerm)
+    );
 };

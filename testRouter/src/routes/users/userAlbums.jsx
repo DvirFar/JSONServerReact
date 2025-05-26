@@ -83,7 +83,7 @@ export default function UserAlbums() {
             <div className="albums-header">
                 <h1>My Albums</h1>
                 <div className="header-buttons">
-                    <button onClick={() => setAlbumState(prev => { return { ...prev, showCreateForm: !prev.showCreateForm } } )} className="create-btn">
+                    <button onClick={() => setAlbumState(prev => ({ ...prev, showCreateForm: !prev.showCreateForm }) )} className="create-btn">
                         {albumState.showCreateForm ? "Cancel" : "Create Album"}
                     </button>
                     <button onClick={() => navigate("/home")} className="back-btn">Back to Home</button>
@@ -97,8 +97,8 @@ export default function UserAlbums() {
                 <CreateAlbumForm 
                   onSubmit={handleCreateAlbum}
                   value={albumState.newTitle}
-                  onChange={(e) => setAlbumState(prev => { return { ...prev, newTitle: e.target.value } } ) }
-                  onCancel={() => setAlbumState(prev => { return { ...prev, showCreateForm: false } } ) }
+                  onChange={(e) => setAlbumState(prev => ({ ...prev, newTitle: e.target.value }) ) }
+                  onCancel={() => setAlbumState(prev => ({ ...prev, showCreateForm: false }) ) }
                 />
             )}
 
@@ -108,7 +108,7 @@ export default function UserAlbums() {
                     type="text"
                     placeholder="Search albums..."
                     value={albumState.searchTerm}
-                    onChange={(e) => setAlbumState(prev => { return { ...prev, searchTerm: e.target.value } } ) }
+                    onChange={(e) => setAlbumState(prev => ({ ...prev, searchTerm: e.target.value }) ) }
                     className="search-input"
                 />
             </div>
@@ -140,7 +140,7 @@ export default function UserAlbums() {
                         <div className="photos-header">
                             <h2>{albumState.selected.title}</h2>
                             <button 
-                                onClick={() => setPhotoState(prev => { return { ...prev, showAddForm: !prev.showAddForm } } ) }
+                                onClick={() => setPhotoState(prev => ({ ...prev, showAddForm: !prev.showAddForm }) ) }
                                 className="add-photo-btn"
                             >
                                 {photoState.showAddForm ? "Cancel" : "Add Photo"}
@@ -152,8 +152,8 @@ export default function UserAlbums() {
                             <AddPhotoForm 
                               onSubmit={handleAddPhoto}
                               newPhoto={photoState.newPhoto}
-                              onChange={(photo) => setPhotoState(prev => { return { ...prev, newPhoto: photo} } ) }
-                              onCancel={() => setPhotoState(prev => { return { ...prev, showAddForm: false } } ) }
+                              onChange={(photo) => setPhotoState(prev => ({ ...prev, newPhoto: photo}) ) }
+                              onCancel={() => setPhotoState(prev => ({ ...prev, showAddForm: false }) ) }
                             />
                         )}
 
