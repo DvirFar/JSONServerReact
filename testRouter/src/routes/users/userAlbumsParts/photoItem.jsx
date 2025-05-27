@@ -6,8 +6,8 @@ export default function PhotoItem({ photo, onDelete }) {
 
     const handleImageError = (e) => {
         setImageError(true);
-        // Use a reliable placeholder service
-        e.target.src = `https://picsum.photos/300/300?random=${photo.id}`;
+        // Use local ImageNotFound.png instead of random image
+        e.target.src = '/ImageNotFound.png';
     };
 
     const handleImageLoad = () => {
@@ -16,18 +16,34 @@ export default function PhotoItem({ photo, onDelete }) {
 
     const getImageSrc = () => {
         if (imageError) {
-            return `https://picsum.photos/300/300?random=${photo.id}`;
+            return '/ImageNotFound.png';
         }
         
         // Try to use the original URL, but if it's a via.placeholder.com URL, 
-        // replace it with picsum which is more reliable
+        // replace it with our local ImageNotFound.png
         let imageUrl = photo.thumbnailUrl || photo.url;
         
         if (imageUrl && imageUrl.includes('via.placeholder.com')) {
-            return `https://picsum.photos/300/300?random=${photo.id}`;
+            return '/ImageNotFound.png';
         }
         
-        return imageUrl || `https://picsum.photos/300/300?random=${photo.id}`;
+        return imageUrl || '/ImageNotFound.png';
+    };
+
+    const getFullImageSrc = () => {
+        // Check if we should use the fallback image for full view too
+        if (imageError) {
+            return '/ImageNotFound.png';
+        }
+        
+        let fullImageUrl = photo.url;
+        
+        // If the URL is from via.placeholder.com or doesn't exist, use fallback
+        if (!fullImageUrl || fullImageUrl.includes('via.placeholder.com')) {
+            return '/ImageNotFound.png';
+        }
+        
+        return fullImageUrl;
     };
 
     return (
@@ -66,7 +82,7 @@ export default function PhotoItem({ photo, onDelete }) {
                 <h4>{photo.title || 'Untitled Photo'}</h4>
                 <div className="photo-actions">
                     <a 
-                        href={photo.url || getImageSrc()} 
+                        href={getFullImageSrc()} 
                         target="_blank" 
                         rel="noopener noreferrer"
                     >
