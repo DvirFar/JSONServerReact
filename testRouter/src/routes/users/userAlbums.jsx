@@ -46,21 +46,41 @@ export default function UserAlbums() {
         handleLoadAlbums();
     }, [username, navigate]);
 
-    const handleLoadAlbums = async () => { loadAlbums(setLoading, setAlbumState, setError) };
+    const handleLoadAlbums = async () => { 
+        await loadAlbums(setLoading, setAlbumState, setError);
+    };
 
-    const handleCreateAlbum = async (e) => { createAlbum(e, albumState, setAlbumState, setError) };
+    const handleCreateAlbum = async (e) => { 
+        await createAlbum(e, albumState, setAlbumState, setError);
+        // Reload albums after creating
+        await loadAlbums(setLoading, setAlbumState, setError);
+    };
 
-    const handleDeleteAlbum = async (albumId) => { deleteAlbum(albumId, albumState, setAlbumState, setPhotoState, setError) };
+    const handleDeleteAlbum = async (albumId) => { 
+        await deleteAlbum(albumId, albumState, setAlbumState, setPhotoState, setError);
+        // Reload albums after deleting
+        await loadAlbums(setLoading, setAlbumState, setError);
+    };
 
-    const handleSelectAlbum = async (album) => { selectAlbum(album, setAlbumState, setPhotoState) };
+    const handleSelectAlbum = async (album) => { 
+        await selectAlbum(album, setAlbumState, setPhotoState);
+    };
 
-    const handleAddPhoto = async (e) => { addPhoto(e, albumState, photoState, setPhotoState, setError) };
+    const handleAddPhoto = async (e) => { 
+        await addPhoto(e, albumState, photoState, setPhotoState, setError);
+    };
 
-    const handleDeletePhoto = async (photoId) => { deletePhoto(photoId, albumState, setError) };
+    const handleDeletePhoto = async (photoId) => { 
+        await deletePhoto(photoId, albumState, setPhotoState, setError);
+    };
 
-    const handleLoadMorePhotos = async () => { loadMorePhotos(albumState, photoState) };
+    const handleLoadMorePhotos = async () => { 
+        await loadMorePhotos(albumState, photoState, setPhotoState);
+    };
 
-    const handleGetFilteredAlbums = () => { return getFilteredAlbums(albumState) };
+    const handleGetFilteredAlbums = () => { 
+        return getFilteredAlbums(albumState);
+    };
 
     if (loading) {
         return <div className="albums-container"><p>Loading albums...</p></div>;

@@ -49,7 +49,7 @@ export const deleteAlbum = async ( albumId, albumState, setAlbumState, setPhotoS
 export const selectAlbum = async ( album, setAlbumState, setPhotoState ) => {
     setAlbumState(prev => { return { ...prev, selected: album } } );
     setPhotoState(prev => { return { ...prev, photos: [], page: 1 } } );
-    await loadPhotos(album.id);
+    await loadPhotos(album.id, 1, setPhotoState);
 };
 
 export const addPhoto = async ( e, albumState, photoState, setPhotoState, setError ) => {
@@ -62,24 +62,24 @@ export const addPhoto = async ( e, albumState, photoState, setPhotoState, setErr
             thumbnailUrl: photoState.newPhoto.url.trim()
         });
         setPhotoState(prev => { return { ...prev, newPhoto: { title: "", url: ""}, showAddForm: false } } );
-        await loadPhotos(albumState.selected.id);
+        await loadPhotos(albumState.selected.id, 1, setPhotoState);
     } catch (err) {
         setError("Failed to add photo: " + err.message);
     }
 };
 
-export const deletePhoto = async ( photoId, albumState, setError ) => {
+export const deletePhoto = async ( photoId, albumState, setPhotoState, setError ) => {
     if (!window.confirm("Are you sure you want to delete this photo?")) return;
     try {
         await deletePhotoUtil(photoId);
-        await loadPhotos(albumState.selected.id);
+        await loadPhotos(albumState.selected.id, 1, setPhotoState);
     } catch (err) {
         setError("Failed to delete photo: " + err.message);
     }
 };
 
-export const loadMorePhotos = async ( albumState, photoState ) => {
-    await loadPhotos(albumState.selected.id, photoState.page + 1);
+export const loadMorePhotos = async ( albumState, photoState, setPhotoState ) => {
+    await loadPhotos(albumState.selected.id, photoState.page + 1, setPhotoState, true);
 };
 
 export const getFilteredAlbums = ( albumState ) => {
@@ -90,20 +90,18 @@ export const getFilteredAlbums = ( albumState ) => {
     );
 };
 
-const loadPhotos = async (albumId, page = 1, photoState, setPhotoState, setError ) => {
+const loadPhotos = async (albumId, page = 1, setPhotoState, append = false) => {
     try {
-        const photosData = await getAlbumPhotos(albumId, page, photoState.perPage);
+        const photosData = await getAlbumPhotos(albumId, page, 6);
         const totalCount = await countAlbumPhotos(albumId);
         
-        if (page === 1) {
-            setPhotoState((prev) => { return { ...prev, photos: photosData } });
+        if (page === 1 || !append) {
+            setPhotoState((prev) => { return { ...prev, photos: photosData, page: page, total: totalCount } });
         } else {
-            setPhotoState((prev) => { return { ...prev, photos: [...prev.photos, photosData] } });
+            setPhotoState((prev) => { return { ...prev, photos: [...prev.photos, ...photosData], page: page, total: totalCount } } );
         }
-        
-        setPhotoState((prev) => { return { ...prev, page: page, total: totalCount } } );
     } catch (err) {
-        setError("Failed to load photos: " + err.message);
+        console.error("Failed to load photos: " + err.message);
     }
 };
 

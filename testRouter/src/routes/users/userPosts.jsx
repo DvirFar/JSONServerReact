@@ -7,6 +7,7 @@ import {
     deletePost,
     selectPost,
     toggleComments,
+    toggleComments,
     addComment,
     deleteComment,
     getFilteredPosts,
@@ -35,9 +36,14 @@ export default function UserPosts() {
     const [commentState, setCommentState] = useState({
         comments: [],
         show: searchParams.get("showComments") === "true",
+        show: searchParams.get("showComments") === "true",
         newComment: "",
     });
     const [error, setError] = useState(null);
+
+    async function loadPostsAsync() {
+        await loadPosts(setPostState, setError);
+    }
 
     async function loadPostsAsync() {
         await loadPosts(setPostState, setError);
@@ -54,6 +60,7 @@ export default function UserPosts() {
             setPostState(prev => ({ ...prev, loading: false }));
             return;
         }
+        loadPostsAsync();
         loadPostsAsync();
     }, [username, navigate]);
 
