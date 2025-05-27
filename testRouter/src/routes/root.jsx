@@ -1,4 +1,4 @@
-import { Outlet, Navigate, redirect, } from "react-router-dom";
+import { Outlet, redirect, } from "react-router-dom";
 import { getCurrentUser } from "../api/auth";
 
 export function loader() {

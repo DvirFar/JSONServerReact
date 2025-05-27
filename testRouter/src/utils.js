@@ -142,35 +142,18 @@ export const deletePost = async (postId, postState, setPostState, setCommentStat
     }
 };
 
-/* */
-
-export const selectPost = (post, username, /*setCommentState,*/ navigate, /*location,*/ showComments) => {
+export const selectPost = (post, username, navigate,) => {
     let url = `/users/${username}/posts/${post.id}`;
-    if (showComments) url += "?showComments=true";
     navigate(url);
-    /*const pathParts = location.pathname.split("?")[0].split("/");
-    const lastPart = pathParts.at(-1);
-    if (lastPart !== "posts") navigate("..", { relative: "path" });
-    if (lastPart !== String(post.id)) {
-        navigate(`${post.id}`);
-    }
-    setCommentState(prev => ({ ...prev, show: false, comments: [] }));*/
 };
 
-export const toggleComments = (post, username, navigate, currentShowComments, setCommentState) => {
+export const toggleComments = (post, username, postId, navigate, currentShowComments, setCommentState) => {
     // Toggle showComments in the URL
     let url = `/users/${username}/posts/${post.id}`;
-    if (!currentShowComments) url += "?showComments=true";
+    if (!currentShowComments || String(post.id) !== String(postId)) url += "?showComments=true";
     setCommentState(prev => ({ ...prev, show: !currentShowComments }));
     navigate(url);
 };
-
-/*export const showComments = async (post, setPostState, commentState, setCommentState, setError, setSearchParams) => {
-    setSearchParams({ "showComments": !commentState.show });
-    setPostState(prev => ({ ...prev, selected: post }));
-    setCommentState(prev => ({ ...prev, show: !prev.show }));
-    await loadComments(post.id, setCommentState, setError);
-};*/
 
 export const loadComments = async (postId, setCommentState, setError) => {
     try {

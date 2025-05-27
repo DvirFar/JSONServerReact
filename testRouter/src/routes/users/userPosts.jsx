@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { /*useLocation,*/ useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getCurrentUser } from "../../api/auth";
 import {
     loadPosts,
@@ -10,7 +10,7 @@ import {
     addComment,
     deleteComment,
     getFilteredPosts,
-    loadComments
+    loadComments,
 } from "../../utils";
 import "./userPosts.css";
 import PostItem from "./userPostsParts/PostItem";
@@ -23,7 +23,6 @@ export default function UserPosts() {
     const { username, postId } = useParams();
     const [ searchParams ] = useSearchParams();
 
-    //const location = useLocation();
     const navigate = useNavigate();
     const [postState, setPostState] = useState({
         posts: [],
@@ -56,6 +55,7 @@ export default function UserPosts() {
             return;
         }
         loadPostsAsync();
+        loadPostsAsync();
     }, [username, navigate]);
 
     useEffect(() => {
@@ -70,7 +70,6 @@ export default function UserPosts() {
     useEffect(() => {
         if (commentState.show) {
             loadComments(postId, setCommentState, setError);
-            setCommentState(prev => ({ ...prev, "show": true }));
         }
     }, [postId, commentState.show])
 
@@ -138,7 +137,7 @@ export default function UserPosts() {
                                 post={post}
                                 selected={postState.selected?.id === post.id}
                                 onSelect={p => selectPost(p, username, navigate, false)}
-                                onShowComments={p => toggleComments(p, username, navigate, commentState.show, setCommentState)}
+                                onShowComments={p => toggleComments(p, username, postId, navigate, commentState.show, setCommentState)}
                                 onDelete={id => deletePost(id, postState, setPostState, setCommentState, setError)}
                             />
                         ))
