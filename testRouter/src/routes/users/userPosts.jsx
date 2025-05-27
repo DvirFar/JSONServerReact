@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { getCurrentUser } from "../../api/auth";
 import {
     loadPosts,
     createPost,
     deletePost,
     selectPost,
-    showComments,
+    toggleComments,
     addComment,
     deleteComment,
-    getFilteredPosts
+    getFilteredPosts,
+    loadComments,
 } from "../../utils";
 import "./userPosts.css";
 import PostItem from "./userPostsParts/PostItem";
@@ -19,7 +20,9 @@ import AddCommentForm from "./userPostsParts/addCommentForm";
 
 
 export default function UserPosts() {
-    const { username } = useParams();
+    const { username, postId } = useParams();
+    const [ searchParams ] = useSearchParams();
+
     const navigate = useNavigate();
     const [postState, setPostState] = useState({
         posts: [],
@@ -31,10 +34,14 @@ export default function UserPosts() {
     });
     const [commentState, setCommentState] = useState({
         comments: [],
-        show: false,
+        show: searchParams.get("showComments") === "true",
         newComment: "",
     });
     const [error, setError] = useState(null);
+
+    async function loadPostsAsync() {
+        await loadPosts(setPostState, setError);
+    }
 
     useEffect(() => {
         const currentUser = getCurrentUser();
@@ -47,8 +54,23 @@ export default function UserPosts() {
             setPostState(prev => ({ ...prev, loading: false }));
             return;
         }
-        loadPosts(setPostState, setError);
+        loadPostsAsync();
     }, [username, navigate]);
+
+    useEffect(() => {
+        if (!postState.loading && postId) {
+            const found = postState.posts.find((post) => String(post.id) === String(postId));
+            setPostState(prev => ({ ...prev, selected: found || null }));
+        } else if (!postId) {
+            setPostState(prev => ({ ...prev, selected: null }));
+        }
+    }, [postId, postState.posts, postState.loading]);
+
+    useEffect(() => {
+        if (commentState.show) {
+            loadComments(postId, setCommentState, setError);
+        }
+    }, [postId, commentState.show])
 
     if (postState.loading) {
         return <div className="posts-container"><p>Loading posts...</p></div>;
@@ -113,8 +135,8 @@ export default function UserPosts() {
                                 key={post.id}
                                 post={post}
                                 selected={postState.selected?.id === post.id}
-                                onSelect={p => selectPost(p, setPostState, setCommentState)}
-                                onShowComments={p => showComments(p, setPostState, setCommentState, setError)}
+                                onSelect={p => selectPost(p, username, navigate, false)}
+                                onShowComments={p => toggleComments(p, username, postId, navigate, commentState.show, setCommentState)}
                                 onDelete={id => deletePost(id, postState, setPostState, setCommentState, setError)}
                             />
                         ))

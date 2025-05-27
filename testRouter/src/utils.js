@@ -144,15 +144,17 @@ export const deletePost = async (postId, postState, setPostState, setCommentStat
     }
 };
 
-export const selectPost = (post, setPostState, setCommentState) => {
-    setPostState(prev => ({ ...prev, selected: post }));
-    setCommentState(prev => ({ ...prev, show: false, comments: [] }));
+export const selectPost = (post, username, navigate,) => {
+    let url = `/users/${username}/posts/${post.id}`;
+    navigate(url);
 };
 
-export const showComments = async (post, setPostState, setCommentState, setError) => {
-    setPostState(prev => ({ ...prev, selected: post }));
-    setCommentState(prev => ({ ...prev, show: true }));
-    await loadComments(post.id, setCommentState, setError);
+export const toggleComments = (post, username, postId, navigate, currentShowComments, setCommentState) => {
+    // Toggle showComments in the URL
+    let url = `/users/${username}/posts/${post.id}`;
+    if (!currentShowComments || String(post.id) !== String(postId)) url += "?showComments=true";
+    setCommentState(prev => ({ ...prev, show: !currentShowComments }));
+    navigate(url);
 };
 
 export const loadComments = async (postId, setCommentState, setError) => {

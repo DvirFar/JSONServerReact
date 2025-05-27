@@ -5,7 +5,7 @@ export default function PostItem({ post, selected, onSelect, onShowComments, onD
         <div className={`post-item ${selected ? 'selected' : ''}`}>
             <div className="post-header">
                 <span className="post-id">#{post.id}</span>
-                <h3 onClick={() => onSelect(post)}>{post.title}</h3>
+                <h3 onClick={() => onSelect(post)} dir="rtl">{post.title}</h3>
             </div>
             <div className="post-actions">
                 <button onClick={() => onSelect(post)}>View</button>
