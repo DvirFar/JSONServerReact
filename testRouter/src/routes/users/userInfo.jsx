@@ -66,17 +66,9 @@ export default function UserInfo() {
                         <label>User ID:</label>
                         <span>{user.id}</span>
                     </div>
-                </div>
-                
-                <div className="info-section">
-                    <h2>Account Status</h2>
                     <div className="info-row">
                         <label>Status:</label>
                         <span className="status-active">Active</span>
-                    </div>
-                    <div className="info-row">
-                        <label>Member Since:</label>
-                        <span>User Registration Date</span>
                     </div>
                 </div>
             </div>

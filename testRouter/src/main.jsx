@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import "./index.css";
 
-import Root from "./routes/root";
+import Root, { loader as rootLoader } from "./routes/root";
 import ErrorPage from "./error-page";
 
 import Login, { action as loginAction } from "./routes/login";
@@ -22,6 +22,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    loader: rootLoader,
     errorElement: <ErrorPage />,
     children: [
       { 
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
         element: <UserTodos />,
       },
       {
-        path: "users/:username/posts",
+        path: "users/:username/posts?/:postId",
         element: <UserPosts />,
       },
       {

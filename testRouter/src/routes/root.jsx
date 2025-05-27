@@ -1,10 +1,18 @@
-import { Outlet, Navigate, } from "react-router-dom";
+import { Outlet, Navigate, redirect, } from "react-router-dom";
+import { getCurrentUser } from "../api/auth";
+
+export function loader() {
+  const user = getCurrentUser();
+    if (!user) {
+        return redirect("/home");
+    }
+    return { user };
+}
 
 export default function Root() {
   return (
     <>
       <Outlet />
-      <Navigate to="/home" />
     </>
   );
 }
