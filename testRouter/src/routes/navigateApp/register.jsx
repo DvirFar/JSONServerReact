@@ -1,6 +1,6 @@
 import { Form, redirect, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { register } from "../api/auth";
+import { register } from "../../api/auth";
 import './login-register.css'
 
 export async function action({ request }) {

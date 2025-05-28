@@ -1,5 +1,5 @@
 import { redirect, useLoaderData, useNavigate } from "react-router-dom";
-import { getCurrentUser, logout } from "../api/auth";
+import { getCurrentUser, logout } from "../../api/auth";
 import "./home.css";
 
 export function loader() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCurrentUser } from "../../api/auth";
+import { getCurrentUser } from "../../../api/auth";
 import "./userInfo.css";
 
 export default function UserInfo() {

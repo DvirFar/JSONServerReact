@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCurrentUser } from "../../api/auth";
-import { getUserTodos, createTodo, updateTodo, deleteTodo } from "../../api/todos";
+import { getCurrentUser } from "../../../api/auth";
+import { getUserTodos, createTodo, updateTodo, deleteTodo } from "../../../api/todos";
 import "./userTodos.css";
 
 export default function UserTodos() {

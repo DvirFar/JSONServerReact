@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { getCurrentUser } from "../../api/auth";
+import { getCurrentUser } from "../../../api/auth";
 import {
     loadPosts,
     createPost,
@@ -11,7 +11,7 @@ import {
     deleteComment,
     getFilteredPosts,
     loadComments,
-} from "../../utils";
+} from "../../../utils";
 import "./userPosts.css";
 import PostItem from "./userPostsParts/PostItem";
 import CreatePostForm from "./userPostsParts/createPostForm";

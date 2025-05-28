@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getCurrentUser } from "../../api/auth";
-import { loadAlbums, createAlbum, deleteAlbum, selectAlbum, addPhoto, deletePhoto, loadMorePhotos, getFilteredAlbums } from "../../utils"
+import { getCurrentUser } from "../../../api/auth";
+import { loadAlbums, createAlbum, deleteAlbum, selectAlbum, addPhoto, deletePhoto, loadMorePhotos, getFilteredAlbums } from "../../../utils"
 
 import "./userAlbums.css";
 import AlbumCard from "./userAlbumsParts/AlbumCard";

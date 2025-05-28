@@ -2,10 +2,6 @@ import { getUserAlbums, getAlbumPhotos, countAlbumPhotos, createAlbum as createA
 import { addPhoto as addPhotoUtil, deletePhoto as deletePhotoUtil } from "./api/photos";
 import { getUserPosts, createPost as createPostApi, deletePost as deletePostApi, getPostComments, addComment as addCommentApi, deleteComment as deleteCommentApi } from "./api/posts";
 
-export function userLogged(userData) {
-  localStorage.setItem("loggedUser", JSON.stringify(userData));
-}
-
 export const loadAlbums = async ( setLoading, setAlbumState, setError ) => {
     try {
         setLoading(true);

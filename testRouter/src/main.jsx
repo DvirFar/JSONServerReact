@@ -7,15 +7,16 @@ import {
 import "./index.css";
 
 import Root, { loader as rootLoader } from "./routes/root";
-import ErrorPage from "./error-page";
+import ErrorPage from "./routes/error-page";
 
-import Login, { action as loginAction } from "./routes/login";
-import Register, { action as registerAction } from "./routes/register";
-import Home, { loader as homeLoader } from "./routes/home";
-import UserInfo from "./routes/users/userInfo";
-import UserTodos from "./routes/users/userTodos";
-import UserPosts from "./routes/users/userPosts";
-import UserAlbums from "./routes/users/userAlbums";
+import Login, { action as loginAction } from "./routes/navigateApp/login";
+import Register, { action as registerAction } from "./routes/navigateApp/register";
+import Home, { loader as homeLoader } from "./routes/navigateApp/home";
+
+import UserInfo from "./routes/navigateApp/users/userInfo";
+import UserTodos from "./routes/navigateApp/users/userTodos";
+import UserPosts from "./routes/navigateApp/users/userPosts";
+import UserAlbums from "./routes/navigateApp/users/userAlbums";
 
 
 const router = createBrowserRouter([
