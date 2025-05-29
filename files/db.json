@@ -1,0 +1,391 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Leanne Graham",
+      "username": "Bret",
+      "email": "Sincere@april.biz",
+      "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough",
+        "zipcode": "92998-3874",
+        "geo": {
+          "lat": "-37.3159",
+          "lng": "81.1496"
+        }
+      },
+      "phone": "1-770-736-8031 x56442",
+      "website": "hildegard.org",
+      "company": {
+        "name": "Romaguera-Crona",
+        "catchPhrase": "Multi-layered client-server neural-net",
+        "bs": "harness real-time e-markets"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Ervin Howell",
+      "username": "Antonette",
+      "email": "Shanna@melissa.tv",
+      "address": {
+        "street": "Victor Plains",
+        "suite": "Suite 879",
+        "city": "Wisokyburgh",
+        "zipcode": "90566-7771",
+        "geo": {
+          "lat": "-43.9509",
+          "lng": "-34.4618"
+        }
+      },
+      "phone": "010-692-6593 x09125",
+      "website": "anastasia.net",
+      "company": {
+        "name": "Deckow-Crist",
+        "catchPhrase": "Proactive didactic contingency",
+        "bs": "synergize scalable supply-chains"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Clementine Bauch",
+      "username": "Samantha",
+      "email": "Nathan@yesenia.net",
+      "address": {
+        "street": "Douglas Extension",
+        "suite": "Suite 847",
+        "city": "McKenziehaven",
+        "zipcode": "59590-4157",
+        "geo": {
+          "lat": "-68.6102",
+          "lng": "-47.0653"
+        }
+      },
+      "phone": "1-463-123-4447",
+      "website": "ramiro.info",
+      "company": {
+        "name": "Romaguera-Jacobson",
+        "catchPhrase": "Face to face bifurcated interface",
+        "bs": "e-enable strategic applications"
+      }
+    },
+    {
+      "id": 4,
+      "name": "a",
+      "username": "a",
+      "email": "a@a.a",
+      "website": "a",
+      "address": {
+        "street": "",
+        "suite": "",
+        "city": "",
+        "zipcode": "",
+        "geo": {
+          "lat": "",
+          "lng": ""
+        }
+      },
+      "phone": "",
+      "company": {
+        "name": "",
+        "catchPhrase": "",
+        "bs": ""
+      }
+    }
+  ],
+  "todos": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "דירוג הפרויקט זה חשוב",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "title": "להשלים את כל הנדרש בפרויקט",
+      "completed": false
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "title": "לתקן באגים בקוד",
+      "completed": true
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "title": "לבדוק את התצוגה במובייל",
+      "completed": true
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "title": "להוסיף הנפשות לממשק",
+      "completed": false
+    },
+    {
+      "id": 6,
+      "userId": 3,
+      "title": "לכתוב תיעוד מקיף",
+      "completed": false
+    },
+    {
+      "id": 7,
+      "userId": 1,
+      "title": "לבדוק תאימות דפדפנים",
+      "completed": false
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "title": "לשפר את ביצועי האפליקציה",
+      "completed": true
+    },
+    {
+      "userId": 4,
+      "title": "finish the FSWD project",
+      "completed": false,
+      "id": 9
+    },
+    {
+      "userId": 1,
+      "title": "לבדוק האם מחיקה עובדת באופן מלא",
+      "completed": false,
+      "id": 10
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "פרויקט Full-Stack הוא מאתגר",
+      "body": "בשנה האחרונה למדנו המון טכנולוגיות חדשות, הכרנו את התשתית של React ועכשיו אנחנו מיישמים את הכל בפרויקט משותף. האתגר הכי גדול הוא לשלב בין הצד הקדמי והאחורי בצורה חלקה."
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "title": "React Hooks שינו את הדרך שבה אני מתכנת",
+      "body": "מאז שהכרתי את hooks כמו useState ו-useEffect, הקוד שלי הרבה יותר מסודר ופונקציונלי. עכשיו אני יכול לנהל מצבים במקומות ממוקדים ואין יותר בלאגן של lifecycle methods. זה באמת מהפכה בעולם React."
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "title": "הרהורים על עבודת צוות בפיתוח",
+      "body": "העבודה בצוות עם עוד מפתח היא אתגר בפני עצמו. חשוב לתקשר בצורה ברורה, לחלק משימות בצורה הגיונית ולכבד את הקוד של אחרים. למדתי המון מהשותף שלי לפרויקט והבנתי שעבודת צוות היא מיומנות שצריך לפתח."
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "title": "חשיבות הבדיקות באפליקציות מודרניות",
+      "body": "לאחרונה התחלתי להבין כמה חשוב לכתוב בדיקות טובות לקוד. זה לא רק עוזר למצוא באגים מוקדם, אלא גם נותן ביטחון לעשות שינויים בקוד בלי לפחד שנשבור משהו."
+    },
+    {
+      "id": 5,
+      "userId": 2,
+      "title": "העתיד של פיתוח Web",
+      "body": "הטכנולוגיות משתנות כל הזמן. מה שהיה רלוונטי לפני שנתיים כבר לא בהכרח מתאים היום. חשוב להישאר מעודכנים ולהמשיך ללמוד כל הזמן."
+    },
+    {
+      "userId": 4,
+      "title": "Testing",
+      "body": "I am testing now the posting",
+      "id": 6
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "postId": 1,
+      "name": "אלון כהן",
+      "email": "alon@example.com",
+      "body": "אני מסכים לחלוטין! שילוב של Frontend ו-Backend הוא האתגר האמיתי. בפרויקט שלנו זה לקח הרבה זמן להבין איך הכל מתחבר."
+    },
+    {
+      "id": 2,
+      "postId": 1,
+      "name": "מיכל לוי",
+      "email": "michal@example.com",
+      "body": "חשוב להבין את המודל המנטלי של שני הצדדים. כל אחד חושב אחרת ויש לו דרישות שונות."
+    },
+    {
+      "id": 3,
+      "postId": 2,
+      "name": "יוסי דור",
+      "email": "yossi@example.com",
+      "body": "Hooks באמת שינו את הגישה. אני גם התחלתי להשתמש בהם לאחרונה והקוד הרבה יותר קריא ונוח לתחזוקה."
+    },
+    {
+      "id": 4,
+      "postId": 2,
+      "name": "שרה גולד",
+      "email": "sara@example.com",
+      "body": "הדבר שהכי מרגש אותי ב-hooks זה שזה הופך את הקוד ליותר פונקציונלי ופחות object-oriented."
+    },
+    {
+      "id": 5,
+      "postId": 3,
+      "name": "דוד רון",
+      "email": "david@example.com",
+      "body": "עבודת צוות זה באמת אומנות. צריך להקשיב, להסביר ולהיות סבלני. לא תמיד קל!"
+    },
+    {
+      "id": 6,
+      "postId": 4,
+      "name": "רונית אשר",
+      "email": "ronit@example.com",
+      "body": "בדיקות זה משהו שהזנחתי בהתחלה, אבל עכשיו אני מבינה כמה זה חשוב. חוסך הרבה זמן בטווח הארוך."
+    }
+  ],
+  "albums": [
+    {
+      "id": 1,
+      "userId": 1,
+      "title": "צילומי מסך של הפרויקט"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "title": "תמונות מהתצוגה הסופית"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "title": "השראות לעיצוב"
+    },
+    {
+      "id": 4,
+      "userId": 3,
+      "title": "סקיצות ראשוניות של הממשק"
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "title": "תהליך הפיתוח"
+    },
+    {
+      "id": 6,
+      "userId": 2,
+      "title": "בדיקות ובאגים"
+    },
+    {
+      "userId": 4,
+      "title": "Album_#1",
+      "id": 7
+    }
+  ],
+  "photos": [
+    {
+      "id": 1,
+      "albumId": 1,
+      "title": "דף הבית של האפליקציה",
+      "url": "https://via.placeholder.com/600/92c952",
+      "thumbnailUrl": "https://via.placeholder.com/150/92c952"
+    },
+    {
+      "id": 2,
+      "albumId": 1,
+      "title": "עמוד הפרופיל של המשתמש",
+      "url": "https://via.placeholder.com/600/771796",
+      "thumbnailUrl": "https://via.placeholder.com/150/771796"
+    },
+    {
+      "id": 3,
+      "albumId": 1,
+      "title": "ממשק ההתחברות",
+      "url": "https://via.placeholder.com/600/24f355",
+      "thumbnailUrl": "https://via.placeholder.com/150/24f355"
+    },
+    {
+      "id": 4,
+      "albumId": 2,
+      "title": "תצוגת רשימת משימות",
+      "url": "https://via.placeholder.com/600/d32776",
+      "thumbnailUrl": "https://via.placeholder.com/150/d32776"
+    },
+    {
+      "id": 5,
+      "albumId": 2,
+      "title": "תצוגת פוסטים ותגובות",
+      "url": "https://via.placeholder.com/600/f66b97",
+      "thumbnailUrl": "https://via.placeholder.com/150/f66b97"
+    },
+    {
+      "id": 6,
+      "albumId": 2,
+      "title": "גלריית תמונות",
+      "url": "https://via.placeholder.com/600/56a8c2",
+      "thumbnailUrl": "https://via.placeholder.com/150/56a8c2"
+    },
+    {
+      "id": 7,
+      "albumId": 3,
+      "title": "עיצוב פלטפורמות דומות",
+      "url": "https://via.placeholder.com/600/b0f7cc",
+      "thumbnailUrl": "https://via.placeholder.com/150/b0f7cc"
+    },
+    {
+      "id": 8,
+      "albumId": 3,
+      "title": "השראות מהאתרים המובילים",
+      "url": "https://via.placeholder.com/600/54176f",
+      "thumbnailUrl": "https://via.placeholder.com/150/54176f"
+    },
+    {
+      "id": 9,
+      "albumId": 4,
+      "title": "סקיצת הממשק הראשית",
+      "url": "https://via.placeholder.com/600/51aa97",
+      "thumbnailUrl": "https://via.placeholder.com/150/51aa97"
+    },
+    {
+      "id": 10,
+      "albumId": 4,
+      "title": "רעיונות לניווט",
+      "url": "https://via.placeholder.com/600/810b14",
+      "thumbnailUrl": "https://via.placeholder.com/150/810b14"
+    },
+    {
+      "id": 11,
+      "albumId": 5,
+      "title": "התחלת הפרויקט",
+      "url": "https://via.placeholder.com/600/1ee8a4",
+      "thumbnailUrl": "https://via.placeholder.com/150/1ee8a4"
+    },
+    {
+      "id": 12,
+      "albumId": 5,
+      "title": "שלב פיתוח הרכיבים",
+      "url": "https://via.placeholder.com/600/66b7d2",
+      "thumbnailUrl": "https://via.placeholder.com/150/66b7d2"
+    },
+    {
+      "id": 13,
+      "albumId": 6,
+      "title": "בדיקת באגים",
+      "url": "https://via.placeholder.com/600/197d29",
+      "thumbnailUrl": "https://via.placeholder.com/150/197d29"
+    },
+    {
+      "id": 14,
+      "albumId": 6,
+      "title": "בדיקות ביצועים",
+      "url": "https://via.placeholder.com/600/61a65c",
+      "thumbnailUrl": "https://via.placeholder.com/150/61a65c"
+    },
+    {
+      "albumId": 7,
+      "title": "test1",
+      "url": "https://iso.500px.com/11-outstanding-photos-show-connections/",
+      "thumbnailUrl": "https://iso.500px.com/11-outstanding-photos-show-connections/",
+      "id": 15
+    },
+    {
+      "albumId": 7,
+      "title": "test2",
+      "url": "https://iso.500px.com/wp-content/uploads/2016/11/stock-photo-159533631-1500x1000.jpg",
+      "thumbnailUrl": "https://iso.500px.com/wp-content/uploads/2016/11/stock-photo-159533631-1500x1000.jpg",
+      "id": 16
+    }
+  ]
+}
